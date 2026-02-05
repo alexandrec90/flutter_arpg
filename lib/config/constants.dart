@@ -10,10 +10,10 @@ class GameConstants {
   static Vector2 get playerStartPosition => Vector2(400, 300);
 
   static List<Vector2> get defaultEnemyPositions => [
-        Vector2(200, 200),
-        Vector2(600, 200),
-        Vector2(400, 500),
-      ];
+    Vector2(200, 200),
+    Vector2(600, 200),
+    Vector2(400, 500),
+  ];
 
   /// Hit-stop duration in milliseconds
   static const int hitStopMs = 50;

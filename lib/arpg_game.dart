@@ -46,7 +46,10 @@ class ARPGGame extends FlameGame
   @override
   void hitStop() {
     pauseEngine();
-    Future.delayed(Duration(milliseconds: GameConstants.hitStopMs), () => resumeEngine());
+    Future.delayed(
+      Duration(milliseconds: GameConstants.hitStopMs),
+      () => resumeEngine(),
+    );
   }
 
   @override

@@ -13,9 +13,16 @@ class ProjectileComponent extends PositionComponent
   final Vector2 velocity;
   final double damage;
 
-  ProjectileComponent(Vector2 start, double angle, {this.damage = ProjectileConstants.damage})
-    : velocity = Vector2(cos(angle), sin(angle)) * ProjectileConstants.speed,
-      super(position: start, size: Vector2.all(ProjectileConstants.size), anchor: Anchor.center);
+  ProjectileComponent(
+    Vector2 start,
+    double angle, {
+    this.damage = ProjectileConstants.damage,
+  }) : velocity = Vector2(cos(angle), sin(angle)) * ProjectileConstants.speed,
+       super(
+         position: start,
+         size: Vector2.all(ProjectileConstants.size),
+         anchor: Anchor.center,
+       );
 
   @override
   void update(double dt) {

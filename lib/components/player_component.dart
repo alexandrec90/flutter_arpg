@@ -18,7 +18,11 @@ class PlayerComponent extends PositionComponent
   double health = PlayerConstants.initialHealth;
 
   PlayerComponent(Vector2 pos)
-    : super(position: pos, size: PlayerConstants.size.clone(), anchor: Anchor.center);
+    : super(
+        position: pos,
+        size: PlayerConstants.size.clone(),
+        anchor: Anchor.center,
+      );
 
   @override
   void update(double dt) {
