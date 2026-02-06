@@ -51,6 +51,4 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-
 // Legacy Flutter + CustomPainter game removed — use `ARPGGame` in `lib/arpg_game.dart`.
-
