@@ -19,6 +19,11 @@ class GameConstants {
   static const int hitStopMs = 50;
 }
 
+class CameraConstants {
+  // Camera follow max speed in pixels per second
+  static const double followMaxSpeed = 600.0;
+}
+
 class PlayerConstants {
   static const double speed = 180.0; // pixels/s
   static const double dashDuration = 0.12; // seconds
@@ -28,6 +33,9 @@ class PlayerConstants {
   static const double cornerRadius = 6.0;
   static const double strokeWidth = 4.0;
   static const Color fillColor = Color(0xFF3EE3A5);
+  static const double collisionRadius = 18.0;
+  static const double hitKnockback = 25.0; // pixels (instant displacement)
+  static const double hitInvincibilityDuration = 0.5; // seconds
 }
 
 class EnemyConstants {
@@ -36,6 +44,7 @@ class EnemyConstants {
   static const double size = 30.0;
   static const double strokeWidth = 3.0;
   static const Color fillColor = Colors.red;
+  static const double contactDamage = 10.0;
 }
 
 class ProjectileConstants {

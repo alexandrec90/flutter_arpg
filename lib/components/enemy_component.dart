@@ -25,13 +25,35 @@ class EnemyComponent extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
-    final players = game.children.whereType<PlayerComponent>();
+    final players = game.world.children.whereType<PlayerComponent>();
     if (players.isEmpty) return;
     final player = players.first;
+
+    // Move toward player
     final dir = player.position - position;
     if (dir.length > 0) {
       dir.normalize();
       position += dir * speed * dt;
+    }
+
+    // Separate from player
+    final playerDiff = position - player.position;
+    final playerDist = playerDiff.length;
+    final playerMinDist = PlayerConstants.collisionRadius + size.x / 2;
+    if (playerDist < playerMinDist && playerDist > 0) {
+      position += playerDiff.normalized() * ((playerMinDist - playerDist) / 2);
+    }
+
+    // Separate from other enemies
+    final enemies = game.world.children.whereType<EnemyComponent>();
+    for (final other in enemies) {
+      if (other == this) continue;
+      final diff = position - other.position;
+      final dist = diff.length;
+      final minDist = size.x; // radius + radius
+      if (dist < minDist && dist > 0) {
+        position += diff.normalized() * ((minDist - dist) / 2);
+      }
     }
   }
 

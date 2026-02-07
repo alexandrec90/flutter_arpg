@@ -7,18 +7,23 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_arpg/game_actions.dart';
 import 'package:flutter_arpg/config/constants.dart';
+import 'package:flutter_arpg/config/input_bindings.dart';
+import 'package:flutter_arpg/components/enemy_component.dart';
 
 class PlayerComponent extends PositionComponent
     with KeyboardHandler, HasGameReference<FlameGame> {
+  final InputBindings inputBindings;
   Vector2 velocity = Vector2.zero();
   final double speed = PlayerConstants.speed; // pixels per second
   bool dashing = false;
   double dashTime = 0.0;
   final double dashDuration = PlayerConstants.dashDuration;
   double health = PlayerConstants.initialHealth;
+  double _hitInvincibleTimer = 0.0;
 
-  PlayerComponent(Vector2 pos)
-    : super(
+  PlayerComponent(Vector2 pos, {InputBindings? inputBindings})
+    : inputBindings = inputBindings ?? InputBindings.defaultBindings,
+      super(
         position: pos,
         size: PlayerConstants.size.clone(),
         anchor: Anchor.center,
@@ -32,6 +37,7 @@ class PlayerComponent extends PositionComponent
       if (dashTime >= dashDuration) {
         dashing = false;
         dashTime = 0.0;
+        velocity = Vector2.zero();
         scale.y = 1.2; // landing squash briefly
       }
     }
@@ -48,12 +54,38 @@ class PlayerComponent extends PositionComponent
     scale.x = 1.0 + (stretchFactor * 0.45) * (dashing ? 1.4 : 1.0);
     scale.y = 1.0 - (stretchFactor * 0.3);
 
-    // Keep inside reasonable bounds (if available)
-    if (game.size.x > 0 && game.size.y > 0) {
-      position.clamp(
-        Vector2.zero() + size / 2,
-        Vector2(game.size.x, game.size.y) - size / 2,
-      );
+    // Keep inside the world bounds
+    position.clamp(
+      Vector2.zero() + size / 2,
+      Vector2(GameConstants.worldWidth, GameConstants.worldHeight) - size / 2,
+    );
+
+    // Invincibility cooldown
+    if (_hitInvincibleTimer > 0) {
+      _hitInvincibleTimer -= dt;
+    }
+
+    // Collide with enemies
+    final enemies = game.world.children.whereType<EnemyComponent>();
+    for (final enemy in enemies) {
+      final diff = position - enemy.position;
+      final dist = diff.length;
+      final minDist = PlayerConstants.collisionRadius + enemy.size.x / 2;
+      if (dist < minDist && dist > 0) {
+        // Push player out of enemy
+        final pushDir = diff.normalized();
+        position += pushDir * ((minDist - dist) / 2);
+
+        // Take damage + knockback if not invincible
+        if (_hitInvincibleTimer <= 0) {
+          health -= EnemyConstants.contactDamage;
+          position += pushDir * PlayerConstants.hitKnockback;
+          _hitInvincibleTimer = PlayerConstants.hitInvincibilityDuration;
+          if (game is GameActions) {
+            (game as GameActions).hitStop();
+          }
+        }
+      }
     }
   }
 
@@ -79,20 +111,20 @@ class PlayerComponent extends PositionComponent
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     final dir = Vector2.zero();
-    if (keysPressed.contains(LogicalKeyboardKey.keyW)) dir.y -= 1;
-    if (keysPressed.contains(LogicalKeyboardKey.keyS)) dir.y += 1;
-    if (keysPressed.contains(LogicalKeyboardKey.keyA)) dir.x -= 1;
-    if (keysPressed.contains(LogicalKeyboardKey.keyD)) dir.x += 1;
+    if (keysPressed.intersection(inputBindings.up).isNotEmpty) dir.y -= 1;
+    if (keysPressed.intersection(inputBindings.down).isNotEmpty) dir.y += 1;
+    if (keysPressed.intersection(inputBindings.left).isNotEmpty) dir.x -= 1;
+    if (keysPressed.intersection(inputBindings.right).isNotEmpty) dir.x += 1;
     if (dir.length > 0) {
       dir.normalize();
       velocity = dir * speed;
     } else {
       if (!dashing) velocity = Vector2.zero();
     }
-    if (keysPressed.contains(LogicalKeyboardKey.space)) {
+    if (keysPressed.intersection(inputBindings.dash).isNotEmpty) {
       dash();
     }
-    if (keysPressed.contains(LogicalKeyboardKey.keyR)) {
+    if (keysPressed.intersection(inputBindings.reset).isNotEmpty) {
       if (game is GameActions) (game as GameActions).reset();
     }
     return true;

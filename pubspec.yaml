@@ -11,8 +11,8 @@ dependencies:
     sdk: flutter
 
   # Example packages for game & animation
-  flame: any
-  rive: any
+  flame: ^1.35.0
+  rive: ^0.14.2
 
 dev_dependencies:
   flutter_test:

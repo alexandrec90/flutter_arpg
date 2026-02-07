@@ -1,42 +1,55 @@
-# flutter_arpg
+# Flutter ARPG -- Elastic Combat
 
-A new Flutter project.
+A 2D isometric action RPG built with **Flutter** and **Flame**, focused on fast, tactile melee combat with squash-and-stretch animation, hit-stop impact frames, and triangular smear VFX.
 
----
+## Getting Started
 
-## Design Doc: Elastic Combat — Isometric ARPG 🎮
+### Prerequisites
 
-### Concept
+- Flutter SDK (Dart ^3.10.8)
+- A desktop, mobile, or web target configured for Flutter
 
-- **Isometric ARPG** focusing on **"Elastic Combat"** — fast, tactile, and expressive melee.
+### Run
 
-### Visual Identity 🎨
+```bash
+flutter pub get
+flutter run
+```
 
-- **Style:** Minimalist Cyber‑Punk; thick outlines and silhouette-driven shapes.
-- **Vibe:** High-speed smears, squash-and-stretch, impact frames.
-- **Perspective:** Isometric (`2:1` ratio).
+The game launches fullscreen. Controls:
 
-### Core Mechanics ⚔️
+| Input             | Action                         |
+| ----------------- | ------------------------------ |
+| WASD / Arrow keys | Move                           |
+| Space             | Dash                           |
+| Click             | Shoot projectile toward cursor |
+| R                 | Reset                          |
 
-- **Snap Dash:** Character stretches during travel and squashes upon landing.
-- **Kinetic Strikes:** Attacks use large triangular smear meshes for 2 frames.
-- **Hit Stop:** `0.05s` game freeze on impact to emphasize hits.
+### Test & Lint
 
-> **Note:** Hit stop tuned to `0.05s` to create palpable impact without interrupting flow.
+```bash
+flutter test
+flutter analyze
+flutter format .
+```
 
-### Technical Stack 🛠️
+## Project Structure
 
-- **Engine:** Flutter + Flame
-- **Animation:** Rive (State Machines + Mesh Deform)
-- **Logic:** Velocity-based stretching
+```text
+lib/
+  main.dart              # Entry point and tap-to-shoot wiring
+  arpg_game.dart         # FlameGame subclass -- world, camera, spawning
+  game_actions.dart      # Interface for game-level actions
+  components/            # Player, enemy, projectile, smear VFX
+  config/                # Constants and input bindings
+test/                    # Unit tests
+docs/design.md           # Design document (concept, mechanics, tech stack)
+```
 
-### Implementation Notes 💡
+## Contributing
 
-- Tie Rive mesh deformation to character velocity for dynamic stretch/squash.
-- Render kinetic smears as triangular mesh overlays timed to 2 frames.
-- Centralize timing constants (e.g., hit stop) for consistent cross-platform behavior.
-
----
-
-Contributions, feedback, and PRs welcome.
-
+- Fork the repo and work on a feature branch off `master`.
+- Keep changes small and focused; open issues for large proposals first.
+- Follow the existing code style and lint rules (see `analysis_options.yaml`).
+- Add tests when adding logic or gameplay features.
+- Run `flutter format .` and `flutter analyze` before opening a PR.

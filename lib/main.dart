@@ -36,11 +36,14 @@ class _MyAppState extends State<MyApp> {
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTapDown: (details) {
-            // Convert tap (screen coordinates) to a direction relative to player
+            // Convert tap (screen coordinates) to world coordinates and aim at player
             final tap = details.localPosition;
+            final worldTap = _game.camera.globalToLocal(
+              Vector2(tap.dx, tap.dy),
+            );
             final playerPos = _game.player.position;
-            final dx = tap.dx - playerPos.x;
-            final dy = tap.dy - playerPos.y;
+            final dx = worldTap.x - playerPos.x;
+            final dy = worldTap.y - playerPos.y;
             final angle = atan2(dy, dx);
             _game.spawnProjectile(playerPos.clone(), angle);
           },

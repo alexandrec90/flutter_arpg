@@ -29,7 +29,7 @@ class ProjectileComponent extends PositionComponent
     super.update(dt);
     position += velocity * dt;
 
-    final enemies = game.children.whereType<EnemyComponent>().toList();
+    final enemies = game.world.children.whereType<EnemyComponent>().toList();
     for (final enemy in enemies) {
       final dist = enemy.position.distanceTo(position);
       if (dist < (enemy.size.x / 2 + size.x / 2)) {
@@ -50,9 +50,13 @@ class ProjectileComponent extends PositionComponent
     }
 
     if (position.x < -ProjectileConstants.outOfBoundsOffset ||
-        position.x > (game.size.x + ProjectileConstants.outOfBoundsOffset) ||
+        position.x >
+            (GameConstants.worldWidth +
+                ProjectileConstants.outOfBoundsOffset) ||
         position.y < -ProjectileConstants.outOfBoundsOffset ||
-        position.y > (game.size.y + ProjectileConstants.outOfBoundsOffset)) {
+        position.y >
+            (GameConstants.worldHeight +
+                ProjectileConstants.outOfBoundsOffset)) {
       removeFromParent();
     }
   }
