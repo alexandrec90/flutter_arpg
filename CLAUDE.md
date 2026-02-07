@@ -20,7 +20,7 @@ Design doc: `docs/design.md`
 
 ## Project Structure
 
-```
+```text
 lib/
   main.dart                      # App entry, fullscreen setup, tap-to-shoot wiring
   arpg_game.dart                 # ARPGGame (FlameGame subclass) -- world, camera, spawning

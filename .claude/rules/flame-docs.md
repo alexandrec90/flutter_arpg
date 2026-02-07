@@ -2,6 +2,8 @@
 globs: lib/**/*.dart
 ---
 
+# Flame API reference
+
 Use this pre-baked Flame API reference (for Flame ^1.35.0) when writing or modifying
 game code. Only fetch live docs for APIs not covered here or when upgrading Flame.
 
@@ -26,7 +28,7 @@ class MyGame extends FlameGame
 **Key properties:**
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | world | World | Default world; add all game entities here |
 | camera | CameraComponent | Default camera paired with world |
 | size | Vector2 | Current viewport size |
@@ -74,7 +76,7 @@ PositionComponent({
 **Key properties:**
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | position | Vector2 | Anchor location relative to parent |
 | size | Vector2 | Dimensions (unaffected by parent scale) |
 | scale | Vector2 | Scale multiplier for component + children |
@@ -143,7 +145,7 @@ Renders a World through a viewport. Default instance available as `game.camera`.
 **Key children:**
 
 | Child | Type | Purpose |
-|-------|------|---------|
+| ------- | ------ | --------- |
 | viewfinder | Viewfinder | Controls position, zoom, angle |
 | viewport | Viewport | The visible window |
 
@@ -278,7 +280,7 @@ class MyEntity extends PositionComponent with CollisionCallbacks {
 **CollisionType** (on hitboxes):
 
 | Type | Behavior |
-|------|----------|
+| ------ | ---------- |
 | active | Collides with active + passive (default) |
 | passive | Only collides with active (static objects) |
 | inactive | No collision checks |
@@ -316,7 +318,7 @@ game.overlays.remove('hud');
 ## Common Anchor Values
 
 | Anchor | Description |
-|--------|-------------|
+| -------- | ------------- |
 | Anchor.topLeft | Default for PositionComponent |
 | Anchor.center | Position = visual center |
 | Anchor.topCenter, bottomCenter, etc. | Edge anchors |
